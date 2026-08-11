@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, X64, ipsos-devops-01, opensuse, podman]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build at root
+        run: npm run build
+
+      - name: Build for production base path
+        env:
+          BASE_PATH: /astra/
+        run: npm run build
+
+      - name: Verify Astro assets use production base path
+        run: |
+          if grep -RIE 'src="/_astro/|href="/_astro/' dist; then
+            echo "Root-relative Astro assets found"
+            exit 1
+          fi
+
+          echo "Production base-path asset check passed"

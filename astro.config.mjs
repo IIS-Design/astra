@@ -6,7 +6,7 @@ export default defineConfig({
   output: 'static',
   
   // Base URL for the site (root path)
-  base: '/',
+  base: process.env.BASE_PATH || '/',
   
   // Trailing slash behavior - 'ignore' allows both /path and /path/ to work
   trailingSlash: 'ignore',
