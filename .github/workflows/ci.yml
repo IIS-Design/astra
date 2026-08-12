@@ -23,8 +23,8 @@ jobs:
           podman rm -f astra-ci >/dev/null 2>&1 || true
           podman run -d --name astra-ci -p 127.0.0.1:18080:80 localhost/astra-ci:${GITHUB_SHA}
           sleep 2
-          curl --fail --silent http://127.0.0.1:18080/ >/dev/null
-          curl --fail --silent http://127.0.0.1:18080/p1/website/homepage/ >/dev/null
+          curl --fail --silent http://127.0.0.1:18080/astra/ >/dev/null
+          curl --fail --silent http://127.0.0.1:18080/astra/p1/website/homepage/ >/dev/null
           podman rm -f astra-ci
           echo "Container smoke test passed"
 
