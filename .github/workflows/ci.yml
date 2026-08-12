@@ -28,9 +28,26 @@ jobs:
           podman rm -f astra-ci
           echo "Container smoke test passed"
 
-      - name: Publish image to GHCR
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io --username "${{ github.actor }}" --password-stdin
+
+      - name: Publish SHA image
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io --username "${{ github.actor }}" --password-stdin
           podman tag localhost/astra-ci:${GITHUB_SHA} ghcr.io/iis-design/astra:${GITHUB_SHA}
           podman push ghcr.io/iis-design/astra:${GITHUB_SHA}
           echo "Published ghcr.io/iis-design/astra:${GITHUB_SHA}"
+
+      - name: Publish main tag and deploy
+        if: github.ref == 'refs/heads/main'
+        run: |
+          podman tag localhost/astra-ci:${GITHUB_SHA} ghcr.io/iis-design/astra:main
+          podman push ghcr.io/iis-design/astra:main
+
+          ssh -i /home/gha-runner/.ssh/id_ed25519_deploy -o BatchMode=yes nico@192.168.1.83 '
+            cd /srv/apps/astra &&
+            docker compose pull &&
+            docker compose up -d &&
+            docker exec design-proxy wget -qO- http://astra/astra/ >/dev/null &&
+            docker exec design-proxy wget -qO- http://astra/astra/p1/website/homepage/ >/dev/null &&
+            echo "Astra production deploy OK"
+          '
