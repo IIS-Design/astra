@@ -2,38 +2,24 @@ name: CI
 
 on:
   push:
-  pull_request:
 
 jobs:
-  build:
+  container:
     runs-on: [self-hosted, Linux, X64, ipsos-devops-01, opensuse, podman]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
+      - name: Build container
+        run: podman build -f Containerfile -t localhost/astra-ci:test .
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build at root
-        run: npm run build
-
-      - name: Build for production base path
-        env:
-          BASE_PATH: /astra/
-        run: npm run build
-
-      - name: Verify Astro assets use production base path
+      - name: Smoke test
         run: |
-          if grep -RIE 'src="/_astro/|href="/_astro/' dist; then
-            echo "Root-relative Astro assets found"
-            exit 1
-          fi
-
-          echo "Production base-path asset check passed"
+          podman rm -f astra-ci >/dev/null 2>&1 || true
+          podman run -d --name astra-ci -p 127.0.0.1:18080:80 localhost/astra-ci:test
+          sleep 2
+          curl --fail --silent http://127.0.0.1:18080/ >/dev/null
+          curl --fail --silent http://127.0.0.1:18080/p1/website/homepage/ >/dev/null
+          podman rm -f astra-ci
+          echo "Container smoke test passed"
