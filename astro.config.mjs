@@ -15,14 +15,4 @@ export default defineConfig({
   build: {
     format: 'directory', // Creates /path/index.html instead of /path.html
   },
-  
-  vite: {
-    preview: {
-      allowedHosts: [
-        'uxipsos-astra-84a1bc8bfda0.herokuapp.com',
-        '.herokuapp.com',
-        'localhost',
-      ],
-    },
-  },
 });
