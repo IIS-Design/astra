@@ -1,0 +1,88 @@
+---
+import type { DailyEngagementItem } from '../../data/dashboard/types';
+
+interface Props {
+  items: DailyEngagementItem[];
+  emphasized?: boolean;
+}
+
+const { items, emphasized = false } = Astro.props;
+
+// Same icon family as the rest of the dashboard — lighter tiles communicate weight, not a new icon style.
+const iconByType: Record<DailyEngagementItem['icon'], string> = {
+  question: 'fa-comment-dots',
+  wheel: 'fa-gift',
+  predictor: 'fa-bullseye',
+};
+---
+
+<section class={`dash-section dash-daily ${emphasized ? 'dash-daily-emphasized' : ''}`} aria-label="Daily engagement">
+  <h2 class="h5 dash-section-title">Daily Engagement</h2>
+  <ul class="dash-daily-grid list-unstyled mb-0">
+    {items.map((item) => (
+      <li class="dash-daily-tile">
+        <div class="dash-daily-head">
+          <i class={`fa-solid ${iconByType[item.icon]} dash-icon`} aria-hidden="true"></i>
+          <span class="dash-daily-title">{item.title}</span>
+        </div>
+        <div class="dash-daily-foot">
+          <span class="dash-daily-points"><i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> {item.pointsLabel}</span>
+          {item.completed ? (
+            <span class="dash-tag dash-tag--muted">Done today</span>
+          ) : (
+            <a class="dash-link-cta" href={item.ctaHref}>{item.ctaLabel}</a>
+          )}
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .dash-daily-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--dash-space-3);
+  }
+
+  .dash-daily-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--dash-space-1);
+    padding: var(--dash-space-3) var(--dash-space-4);
+    background: var(--dash-surface);
+    border: 1px solid var(--dash-border-subtle);
+    border-radius: var(--dash-radius-sm);
+  }
+
+  .dash-daily-emphasized .dash-daily-tile {
+    background: var(--dash-surface-brand-subtle);
+  }
+
+  .dash-daily-head {
+    display: flex;
+    align-items: center;
+    gap: var(--dash-space-2);
+  }
+
+  .dash-daily-title {
+    font-size: var(--dash-fs-body);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--dash-text-primary);
+  }
+
+  .dash-daily-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--dash-space-2);
+    min-height: var(--dash-control-sm);
+  }
+
+  .dash-daily-points {
+    font-size: var(--dash-fs-meta);
+    color: var(--dash-text-secondary);
+    white-space: nowrap;
+  }
+</style>

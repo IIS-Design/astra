@@ -1,0 +1,164 @@
+/*  Dashboard-scoped semantic tokens — mapped onto existing Astra tokens.
+    Scoped to .isay-dashboard so no other Astra route is affected.
+
+    Known upstream issue (documented, not fixed here): src/assets/styles/variables.css
+    defines --border-radius-sm/md/lg/xl THREE times in the same :root block (rem values,
+    then 4/6/8/10px, then 16/24/40/64/96px under a mislabeled Padding comment block).
+    The last block wins, so site-wide var(--border-radius-lg) currently resolves to 40px,
+    not 8px. That is almost certainly why the first dashboard pass looked like oversized
+    pill/capsule containers. Recommendation: de-duplicate that block in a follow-up pass.
+    This file intentionally avoids var(--border-radius-*) for that reason. */
+
+.isay-dashboard {
+  /* Surfaces */
+  --dash-surface: var(--bg-default-default);
+  --dash-surface-subtle: var(--bg-light-gray-default);
+  --dash-surface-brand-subtle: var(--bg-primary-minus-2);
+
+  /* Borders */
+  --dash-border-subtle: var(--stroke-default-minus-2);
+
+  /* Text */
+  --dash-text-primary: var(--text-main);
+  --dash-text-secondary: var(--text-muted);
+
+  /* Brand / status accents (used sparingly — accent bars, tags, points) */
+  --dash-brand: var(--bg-primary-default);
+  --dash-success: var(--bg-success-default);
+  --dash-warning: var(--bg-warning-default);
+  --dash-points: var(--text-warning-default);
+
+  /* Radius scale — deliberately separate from the ambiguous global --border-radius-* names.
+     Restrained on purpose: 4 / 8 / 12px, never the 40px the broken global tokens produce. */
+  --dash-radius-control: 4px;
+  --dash-radius-sm: 8px;
+  --dash-radius-md: 12px;
+
+  /* Spacing scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 (--dash-space-1 … -7). Named aliases kept for existing usages. */
+  --dash-space-1: 4px;
+  --dash-space-2: 8px;
+  --dash-space-3: 12px;
+  --dash-space-4: 16px;
+  --dash-space-5: 24px;
+  --dash-space-6: 32px;
+  --dash-space-7: 48px;
+  --dash-space-xs: var(--dash-space-2);
+  --dash-space-sm: var(--dash-space-3);
+  --dash-space-md: var(--dash-space-5);
+  --dash-space-lg: var(--dash-space-6);
+
+  /* Control heights: small 32 / default 40 / prominent 44 */
+  --dash-control-sm: 32px;
+  --dash-control-md: 40px;
+  --dash-control-lg: 44px;
+
+  /* Type scale (dashboard only): card title 16 / body 14 / meta 13 / eyebrow + badge 12 */
+  --dash-fs-title: 16px;
+  --dash-fs-body: 14px;
+  --dash-fs-meta: 13px;
+  --dash-fs-label: 12px;
+
+  /* Icon system: one family (Font Awesome solid, already loaded site-wide),
+     navy by default, restrained size, used only where it helps distinguish content. */
+  --dash-icon-color: var(--dash-text-primary);
+  --dash-icon-size: 16px;
+}
+
+/* Fixed-width icon box so titles and labels start at the same x everywhere. */
+.isay-dashboard .dash-icon {
+  display: inline-block;
+  width: var(--dash-icon-size);
+  font-size: var(--dash-icon-size);
+  color: var(--dash-icon-color);
+  line-height: 1;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.isay-dashboard .dash-points-icon {
+  color: var(--dash-points);
+}
+
+/* Text-link CTA (lighter modules: daily tiles, referral, quick poll). */
+.isay-dashboard .dash-link-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--dash-control-sm);
+  font-size: var(--dash-fs-body);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.isay-dashboard .dash-section-title {
+  margin-bottom: var(--dash-space-4);
+}
+
+/* Meta line (points · duration): one style everywhere. */
+.isay-dashboard .dash-meta {
+  font-size: var(--dash-fs-meta);
+  font-weight: 700;
+  color: var(--dash-text-primary);
+}
+
+/* Button system — scoped to the dashboard, never touches global .btn.
+   default 40 · .btn-sm 32 · .dash-btn--prominent 44. Labels never wrap. */
+.isay-dashboard .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--dash-control-md);
+  padding: 0 var(--dash-space-5);
+  font-size: var(--dash-fs-body);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.isay-dashboard .btn.btn-sm {
+  min-height: var(--dash-control-sm);
+  padding: 0 var(--dash-space-4);
+  font-size: var(--dash-fs-body);
+}
+
+.isay-dashboard .btn.dash-btn--prominent {
+  min-height: var(--dash-control-lg);
+  padding: 0 var(--dash-space-5);
+}
+
+/* Shared contained-module panel — Primary Action, Progress Overview, Articles rail. */
+.isay-dashboard .dash-panel {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border-subtle);
+  border-radius: var(--dash-radius-md);
+}
+
+/* Shared status tags — small, text-first, never decorative. */
+.isay-dashboard .dash-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  font-size: var(--dash-fs-label);
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 var(--dash-space-2);
+  border-radius: var(--dash-radius-control);
+  white-space: nowrap;
+}
+
+.isay-dashboard .dash-tag--success {
+  color: var(--text-success-plus-2);
+  background: var(--bg-success-minus-1);
+  border: 1px solid var(--stroke-success-minus-1);
+}
+
+.isay-dashboard .dash-tag--muted {
+  color: var(--dash-text-secondary);
+  background: var(--dash-surface-subtle);
+  border: 1px solid var(--dash-border-subtle);
+}
+
+.isay-dashboard .dash-tag--locked {
+  color: var(--dash-text-secondary);
+  background: var(--dash-surface-subtle);
+  border: 1px solid var(--dash-border-subtle);
+}
+

@@ -1,0 +1,106 @@
+---
+import type { ProgressOverview as ProgressOverviewData } from '../../data/dashboard/types';
+
+interface Props {
+  progress: ProgressOverviewData;
+}
+
+const { progress } = Astro.props;
+const pointsPct = Math.min(100, Math.round((progress.points / progress.rewardThreshold) * 100));
+const pointsToGo = Math.max(0, progress.rewardThreshold - progress.points);
+---
+
+<section class="dash-progress dash-panel" aria-label="Points and progress overview">
+  <div class="dash-progress-col">
+    <p class="dash-progress-headline mb-0">
+      <i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> <strong>{progress.points} points</strong>
+      {progress.canRedeem ? (
+        <span class="dash-tag dash-tag--success">Redeem now</span>
+      ) : (
+        <span class="dash-progress-sub">· {pointsToGo} to go</span>
+      )}
+    </p>
+    <div class="progress dash-progress-bar" role="progressbar" aria-valuenow={pointsPct} aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar" style={`width: ${pointsPct}%`}></div>
+    </div>
+    <p class="dash-progress-note mb-0">
+      Redeem at <strong class="text-main">{progress.rewardThreshold} points</strong> — {progress.rewardLabel}
+    </p>
+  </div>
+  <div class="dash-progress-divider" aria-hidden="true"></div>
+  <div class="dash-progress-col">
+    <p class="dash-progress-headline mb-0">Profile <strong>{progress.profileCompletion}% complete</strong></p>
+    <div class="progress dash-progress-bar" role="progressbar" aria-valuenow={progress.profileCompletion} aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar dash-profile-bar" style={`width: ${progress.profileCompletion}%`}></div>
+    </div>
+    <p class="dash-progress-note mb-0">
+      {progress.profileCompletion >= 100
+        ? 'Your profile is complete — you\u2019ll get our best survey matches.'
+        : 'A complete profile means more survey matches.'}
+    </p>
+  </div>
+</section>
+
+<style>
+  .dash-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--dash-space-5);
+    padding: var(--dash-space-5);
+  }
+
+  .dash-progress-col {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .dash-progress-headline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--dash-space-2);
+    min-height: 24px;
+    font-size: var(--dash-fs-title);
+    line-height: 1.25;
+    color: var(--dash-text-primary);
+    margin-bottom: var(--dash-space-3);
+  }
+
+  .dash-progress-sub {
+    font-size: var(--dash-fs-body);
+    color: var(--dash-text-secondary);
+    font-weight: 400;
+  }
+
+  .dash-progress-bar {
+    height: 8px;
+  }
+
+  .dash-profile-bar {
+    background: var(--dash-warning);
+  }
+
+  .dash-progress-note {
+    font-size: var(--dash-fs-meta);
+    line-height: 1.4;
+    color: var(--dash-text-secondary);
+    margin-top: var(--dash-space-3);
+  }
+
+  .dash-progress-divider {
+    height: 1px;
+    background: var(--dash-border-subtle);
+  }
+
+  @media (min-width: 768px) {
+    .dash-progress {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    .dash-progress-divider {
+      width: 1px;
+      height: auto;
+    }
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import type { Article } from '../../data/dashboard/types';
+
+interface Props {
+  articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<section class="dash-articles dash-panel" aria-label="Latest from Ipsos iSay Today">
+  <h2 class="h6 dash-rail-heading">Latest from Ipsos iSay Today</h2>
+  <ul class="dash-articles-list list-unstyled mb-0">
+    {articles.map((article) => (
+      <li class="dash-article">
+        {article.tag && <span class="dash-article-tag">{article.tag}</span>}
+        <a href={article.href} class="dash-article-title">{article.title}</a>
+        <p class="dash-article-excerpt mb-0">{article.excerpt}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .dash-articles {
+    padding: var(--dash-space-5);
+    background: var(--dash-surface-subtle);
+  }
+
+  .dash-rail-heading {
+    margin: 0;
+    padding-bottom: var(--dash-space-3);
+    border-bottom: 1px solid var(--dash-border-subtle);
+    font-size: var(--dash-fs-label) !important;
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dash-text-secondary) !important;
+  }
+
+  .dash-article {
+    padding: var(--dash-space-4) 0;
+    border-bottom: 1px solid var(--dash-border-subtle);
+  }
+
+  .dash-article:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .dash-article-tag {
+    display: block;
+    font-size: var(--dash-fs-label);
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dash-text-secondary);
+    margin-bottom: var(--dash-space-1);
+  }
+
+  .dash-article-title {
+    display: block;
+    font-size: var(--dash-fs-body);
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: var(--dash-space-1);
+  }
+
+  .dash-article-excerpt {
+    font-size: var(--dash-fs-meta);
+    line-height: 1.4;
+    color: var(--dash-text-secondary);
+  }
+</style>

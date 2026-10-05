@@ -1,0 +1,65 @@
+---
+// Minimal logged-in header for the iSay dashboard prototype.
+// Balance text is updated client-side when the dev state switcher changes state.
+import { Image } from 'astro:assets';
+import headerLogo from '../../assets/images/logo.svg';
+
+interface Props {
+  points: number;
+}
+
+const { points } = Astro.props;
+---
+
+<header class="dash-header">
+  <div class="container d-flex align-items-center justify-content-between gap-3">
+    <a class="dash-brand" href="/dashboard/">
+      <Image src={headerLogo} class="img-fluid" alt="Ipsos iSay" />
+    </a>
+    <div class="dash-header-meta d-flex align-items-center gap-3">
+      <span class="dash-balance">
+        <i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i>
+        <strong id="dash-balance-value">{points}</strong> points
+      </span>
+      <span class="dash-user">
+        <i class="fa-solid fa-circle-user" aria-hidden="true"></i>
+        <span class="d-none d-sm-inline">Jordan</span>
+      </span>
+    </div>
+  </div>
+</header>
+
+<style>
+  .dash-header {
+    padding: var(--dash-space-3) 0;
+    border-bottom: 1px solid var(--dash-border-subtle, var(--stroke-default-minus-2));
+    background: var(--white);
+  }
+
+  .dash-brand img {
+    height: 32px;
+    width: auto;
+  }
+
+  .dash-header-meta {
+    font-size: var(--dash-fs-body);
+    color: var(--text-muted);
+  }
+
+  .dash-balance,
+  .dash-user {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--dash-space-2);
+    white-space: nowrap;
+  }
+
+  .dash-balance strong {
+    color: var(--text-main);
+  }
+
+  .dash-user i {
+    font-size: 18px;
+    color: var(--text-light-gray-plus-1);
+  }
+</style>

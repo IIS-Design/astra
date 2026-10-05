@@ -1,0 +1,42 @@
+---
+import type { Opportunity, Referral } from '../../data/dashboard/types';
+import OpportunityCard from './OpportunityCard.astro';
+import ReferralPromo from './ReferralPromo.astro';
+
+interface Props {
+  opportunities: Opportunity[];
+  referral: Referral;
+}
+
+const { opportunities, referral } = Astro.props;
+---
+
+<section class="dash-section dash-opportunities" aria-label="Earning opportunities">
+  <h2 class="h5 dash-section-title">Ways to Earn</h2>
+  <ul class="dash-opp-grid list-unstyled mb-0">
+    {opportunities.map((opportunity) => (
+      <OpportunityCard opportunity={opportunity} />
+    ))}
+  </ul>
+  <ReferralPromo referral={referral} />
+</section>
+
+<style>
+  .dash-opp-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--dash-space-4);
+  }
+
+  @media (min-width: 700px) {
+    .dash-opp-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1240px) {
+    .dash-opp-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

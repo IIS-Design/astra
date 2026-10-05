@@ -1,0 +1,124 @@
+---
+// Internal prototype control only — not part of the actual iSay dashboard UI.
+// Lets reviewers flip between mock dashboard scenarios without editing code.
+import type { DashboardState } from '../../data/dashboard/types';
+
+interface Props {
+  states: DashboardState[];
+  defaultStateId: string;
+}
+
+const { states, defaultStateId } = Astro.props;
+---
+
+<div class="devtool-switcher" data-default-state={defaultStateId}>
+  <button type="button" id="devtool-toggle" class="devtool-toggle" aria-expanded="false">
+    <i class="fa-solid fa-flask" aria-hidden="true"></i>
+    <span class="d-none d-sm-inline">Prototype</span>
+  </button>
+  <div class="devtool-panel" id="devtool-panel" hidden>
+    <p class="devtool-label">Scenario</p>
+    <select id="devtool-select" class="form-select form-select-sm">
+      {states.map((state) => (
+        <option value={state.id}>{state.label}</option>
+      ))}
+    </select>
+    <p class="devtool-note" id="devtool-note"></p>
+  </div>
+</div>
+
+<style>
+  .devtool-switcher {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    z-index: 1000;
+    font-family: monospace;
+  }
+
+  .devtool-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1b161e;
+    color: #ffb020;
+    border: 2px dashed #ffb020;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: monospace;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  .devtool-panel {
+    margin-top: 8px;
+    background: #1b161e;
+    color: #fff;
+    border: 2px dashed #ffb020;
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 260px;
+    max-width: calc(100vw - 32px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  .devtool-label {
+    margin: 0 0 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffb020;
+  }
+
+  .devtool-note {
+    margin: 6px 0 0;
+    font-size: 11px;
+    color: #c9c3cf;
+    line-height: 1.4;
+  }
+</style>
+
+<script>
+  import { dashboardStates } from '../../data/dashboard/mockStates';
+
+  const STORAGE_KEY = 'isay-dashboard-state';
+  const select = document.getElementById('devtool-select') as HTMLSelectElement | null;
+  const note = document.getElementById('devtool-note');
+  const switcher = document.querySelector<HTMLElement>('.devtool-switcher');
+  const balanceEl = document.getElementById('dash-balance-value');
+
+  function applyState(stateId: string) {
+    document.querySelectorAll<HTMLElement>('.dash-state-panel').forEach((panel) => {
+      const isActive = panel.dataset.state === stateId;
+      panel.classList.toggle('is-active', isActive);
+      if (isActive && balanceEl) {
+        balanceEl.textContent = panel.dataset.points ?? balanceEl.textContent;
+      }
+    });
+
+    const state = dashboardStates.find((s) => s.id === stateId);
+    if (note && state) {
+      note.textContent = state.devNote;
+    }
+
+    if (select) select.value = stateId;
+    localStorage.setItem(STORAGE_KEY, stateId);
+  }
+
+  const initial = localStorage.getItem(STORAGE_KEY) ?? switcher?.dataset.defaultState ?? dashboardStates[0].id;
+  applyState(initial);
+
+  select?.addEventListener('change', () => {
+    if (select.value) applyState(select.value);
+  });
+
+  const toggle = document.getElementById('devtool-toggle');
+  const panel = document.getElementById('devtool-panel');
+  toggle?.addEventListener('click', () => {
+    const isOpen = !panel?.hidden;
+    if (panel) panel.hidden = isOpen;
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>
