@@ -23,20 +23,24 @@ const { articles } = Astro.props;
 
 <style>
   .dash-articles {
-    padding: var(--dash-space-md);
+    padding: var(--dash-space-5);
     background: var(--dash-surface-subtle);
   }
 
   .dash-rail-heading {
-    font-size: 13px !important;
+    margin: 0;
+    padding-bottom: var(--dash-space-3);
+    border-bottom: 1px solid var(--dash-border-subtle);
+    font-size: var(--dash-fs-label) !important;
+    line-height: 1.25;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--dash-text-secondary) !important;
   }
 
   .dash-article {
-    padding: 14px 0;
-    border-bottom: 1px dotted var(--dash-border-subtle);
+    padding: var(--dash-space-4) 0;
+    border-bottom: 1px solid var(--dash-border-subtle);
   }
 
   .dash-article:last-child {
@@ -44,27 +48,27 @@ const { articles } = Astro.props;
     padding-bottom: 0;
   }
 
-  .dash-article:first-child {
-    padding-top: 0;
-  }
-
   .dash-article-tag {
     display: block;
-    font-size: 11px;
+    font-size: var(--dash-fs-label);
+    line-height: 1.25;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     color: var(--dash-text-secondary);
-    margin-bottom: 4px;
+    margin-bottom: var(--dash-space-1);
   }
 
   .dash-article-title {
     display: block;
-    font-size: 14px;
-    margin-bottom: 4px;
+    font-size: var(--dash-fs-body);
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: var(--dash-space-1);
   }
 
   .dash-article-excerpt {
-    font-size: 13px;
+    font-size: var(--dash-fs-meta);
+    line-height: 1.4;
     color: var(--dash-text-secondary);
   }
 </style>

@@ -25,7 +25,7 @@ const { opportunities, referral } = Astro.props;
   .dash-opp-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    gap: var(--dash-space-4);
   }
 
   @media (min-width: 700px) {

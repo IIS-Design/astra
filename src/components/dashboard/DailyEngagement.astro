@@ -40,20 +40,19 @@ const iconByType: Record<DailyEngagementItem['icon'], string> = {
 
 <style>
   .dash-daily-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--dash-space-3);
   }
 
   .dash-daily-tile {
-    flex: 1 1 200px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: var(--dash-space-xs) var(--dash-space-sm);
+    gap: var(--dash-space-1);
+    padding: var(--dash-space-3) var(--dash-space-4);
     background: var(--dash-surface);
     border: 1px solid var(--dash-border-subtle);
-    border-radius: var(--dash-radius-control);
+    border-radius: var(--dash-radius-sm);
   }
 
   .dash-daily-emphasized .dash-daily-tile {
@@ -63,12 +62,13 @@ const iconByType: Record<DailyEngagementItem['icon'], string> = {
   .dash-daily-head {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--dash-space-2);
   }
 
   .dash-daily-title {
-    font-size: 14px;
+    font-size: var(--dash-fs-body);
     font-weight: 700;
+    line-height: 1.3;
     color: var(--dash-text-primary);
   }
 
@@ -76,11 +76,12 @@ const iconByType: Record<DailyEngagementItem['icon'], string> = {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--dash-space-2);
+    min-height: var(--dash-control-sm);
   }
 
   .dash-daily-points {
-    font-size: 13px;
+    font-size: var(--dash-fs-meta);
     color: var(--dash-text-secondary);
     white-space: nowrap;
   }

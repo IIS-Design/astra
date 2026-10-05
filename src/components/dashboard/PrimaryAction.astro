@@ -20,7 +20,6 @@ const tone = toneByKind[action.kind];
 ---
 
 <section class={`dash-primary tone-${tone}`} aria-label="Next best action">
-  <span class="dash-primary-accent" aria-hidden="true"></span>
   <div class="dash-primary-body">
     <p class="dash-eyebrow">{action.eyebrow}</p>
     <div class="dash-primary-row">
@@ -37,9 +36,9 @@ const tone = toneByKind[action.kind];
         )}
       </div>
       <div class="dash-primary-actions">
-        <a class="btn btn-primary" href={action.ctaHref}>{action.ctaLabel}</a>
+        <a class="btn btn-primary dash-btn--prominent" href={action.ctaHref}>{action.ctaLabel}</a>
         {action.secondaryCtaLabel && (
-          <a class="dash-link-cta d-block mt-2" href={action.secondaryCtaHref}>
+          <a class="dash-link-cta" href={action.secondaryCtaHref}>
             {action.secondaryCtaLabel}
           </a>
         )}
@@ -51,23 +50,18 @@ const tone = toneByKind[action.kind];
 <style>
   .dash-primary {
     display: flex;
-    gap: 16px;
-    padding: var(--dash-space-md) var(--dash-space-md) var(--dash-space-md) 0;
+    padding: var(--dash-space-5);
     background: var(--dash-surface-subtle);
     border: 1px solid var(--dash-border-subtle);
+    border-left-width: 4px;
+    border-left-color: var(--dash-brand);
     border-radius: var(--dash-radius-md);
     overflow: hidden;
   }
 
-  .dash-primary-accent {
-    width: 5px;
-    flex-shrink: 0;
-    background: var(--dash-brand);
-  }
-
-  .tone-success .dash-primary-accent { background: var(--dash-success); }
-  .tone-secondary .dash-primary-accent { background: var(--bg-secondary-default); }
-  .tone-warning .dash-primary-accent { background: var(--dash-warning); }
+  .tone-success { border-left-color: var(--dash-success); }
+  .tone-secondary { border-left-color: var(--bg-secondary-default); }
+  .tone-warning { border-left-color: var(--dash-warning); }
 
   .dash-primary-body {
     flex: 1;
@@ -77,38 +71,48 @@ const tone = toneByKind[action.kind];
   .dash-eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    font-size: 12px;
+    font-size: var(--dash-fs-label);
     font-weight: 700;
+    line-height: 1.25;
     color: var(--dash-text-secondary);
-    margin-bottom: 6px;
+    margin-bottom: var(--dash-space-2);
   }
 
   .dash-primary-heading {
     font-size: 22px !important;
-    margin-bottom: 6px;
+    line-height: 1.25;
+    margin-bottom: var(--dash-space-2);
   }
 
   .dash-primary-desc {
+    font-size: var(--dash-fs-title);
     color: var(--dash-text-secondary);
+    max-width: 60ch;
   }
 
   .dash-primary-meta {
-    font-size: 14px;
-    color: var(--dash-text-primary);
-    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--dash-space-1) var(--dash-space-4);
+    margin-top: var(--dash-space-3);
   }
 
   .dash-meta-item {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    margin-right: 16px;
+    gap: var(--dash-space-2);
+    font-size: var(--dash-fs-meta);
     font-weight: 700;
+    color: var(--dash-text-primary);
   }
 
   .dash-primary-actions {
-    flex-shrink: 0;
-    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--dash-space-2) var(--dash-space-4);
+    margin-top: var(--dash-space-4);
   }
 
   @media (min-width: 768px) {
@@ -116,12 +120,14 @@ const tone = toneByKind[action.kind];
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: var(--dash-space-5);
     }
 
     .dash-primary-actions {
+      flex-direction: column;
+      flex-shrink: 0;
+      gap: var(--dash-space-1);
       margin-top: 0;
-      text-align: right;
     }
   }
 </style>

@@ -14,7 +14,7 @@ const image = rewardImages[reward.image as keyof typeof rewardImages];
 <li class="dash-reward">
   <div class={`dash-reward-card ${reward.status === 'locked' ? 'is-locked' : ''}`}>
     <Image src={image} class="dash-reward-img" alt={reward.title} />
-    <p class="dash-reward-title mb-1">{reward.title}</p>
+    <p class="dash-reward-title">{reward.title}</p>
     <div class="dash-reward-footer">
       <span class="dash-reward-points">
         <i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> {reward.points}
@@ -29,46 +29,65 @@ const image = rewardImages[reward.image as keyof typeof rewardImages];
 <style>
   .dash-reward {
     scroll-snap-align: start;
-    min-width: 168px;
-    max-width: 168px;
+    flex: 0 0 168px;
+    width: 168px;
   }
 
   .dash-reward-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     border: 1px solid var(--dash-border-subtle);
     border-radius: var(--dash-radius-sm);
-    padding: 10px;
-    height: 100%;
+    padding: var(--dash-space-3);
   }
 
-  .dash-reward-card.is-locked {
+  .dash-reward-card.is-locked .dash-reward-img,
+  .dash-reward-card.is-locked .dash-reward-title,
+  .dash-reward-card.is-locked .dash-reward-points {
     opacity: 0.6;
   }
 
   .dash-reward-img {
     display: block;
     width: 100%;
+    aspect-ratio: 10 / 7;
     height: auto;
+    object-fit: cover;
     border-radius: var(--dash-radius-control);
-    margin-bottom: 8px;
+    margin-bottom: var(--dash-space-2);
   }
 
+  /* Two-line clamp with a reserved two-line height so every card footer lines up. */
   .dash-reward-title {
-    font-size: 13px;
-    color: var(--dash-text-primary);
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis;
+    min-height: calc(2 * 1.3em);
+    margin-bottom: var(--dash-space-2);
+    font-size: var(--dash-fs-meta);
+    line-height: 1.3;
+    color: var(--dash-text-primary);
   }
 
   .dash-reward-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 6px;
+    gap: var(--dash-space-2);
+    margin-top: auto;
+    min-height: 24px;
+  }
+
+  /* Status labels read as secondary metadata: smaller and regular weight, same for every status. */
+  .dash-reward-footer .dash-tag {
+    font-size: 11px;
+    font-weight: 400;
   }
 
   .dash-reward-points {
-    font-size: 13px;
+    font-size: var(--dash-fs-meta);
     font-weight: 700;
     color: var(--dash-text-primary);
     white-space: nowrap;

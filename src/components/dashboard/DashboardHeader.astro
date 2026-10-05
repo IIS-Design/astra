@@ -31,7 +31,7 @@ const { points } = Astro.props;
 
 <style>
   .dash-header {
-    padding: 14px 0;
+    padding: var(--dash-space-3) 0;
     border-bottom: 1px solid var(--dash-border-subtle, var(--stroke-default-minus-2));
     background: var(--white);
   }
@@ -42,7 +42,7 @@ const { points } = Astro.props;
   }
 
   .dash-header-meta {
-    font-size: 14px;
+    font-size: var(--dash-fs-body);
     color: var(--text-muted);
   }
 
@@ -50,7 +50,7 @@ const { points } = Astro.props;
   .dash-user {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--dash-space-2);
     white-space: nowrap;
   }
 

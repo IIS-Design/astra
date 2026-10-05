@@ -45,31 +45,35 @@ const pointsToGo = Math.max(0, progress.rewardThreshold - progress.points);
   .dash-progress {
     display: flex;
     flex-direction: column;
-    gap: var(--dash-space-md);
-    padding: var(--dash-space-md);
+    gap: var(--dash-space-5);
+    padding: var(--dash-space-5);
   }
 
   .dash-progress-col {
-    flex: 1;
+    flex: 1 1 0;
     min-width: 0;
   }
 
   .dash-progress-headline {
-    font-size: 15px;
-    color: var(--dash-text-primary);
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: var(--dash-space-2);
+    min-height: 24px;
+    font-size: var(--dash-fs-title);
+    line-height: 1.25;
+    color: var(--dash-text-primary);
+    margin-bottom: var(--dash-space-3);
   }
 
   .dash-progress-sub {
+    font-size: var(--dash-fs-body);
     color: var(--dash-text-secondary);
     font-weight: 400;
   }
 
   .dash-progress-bar {
-    height: 6px;
+    height: 8px;
   }
 
   .dash-profile-bar {
@@ -77,9 +81,10 @@ const pointsToGo = Math.max(0, progress.rewardThreshold - progress.points);
   }
 
   .dash-progress-note {
-    font-size: 13px;
+    font-size: var(--dash-fs-meta);
+    line-height: 1.4;
     color: var(--dash-text-secondary);
-    margin-top: 8px;
+    margin-top: var(--dash-space-3);
   }
 
   .dash-progress-divider {
@@ -90,13 +95,12 @@ const pointsToGo = Math.max(0, progress.rewardThreshold - progress.points);
   @media (min-width: 768px) {
     .dash-progress {
       flex-direction: row;
-      align-items: flex-start;
+      align-items: stretch;
     }
 
     .dash-progress-divider {
       width: 1px;
       height: auto;
-      align-self: stretch;
     }
   }
 </style>

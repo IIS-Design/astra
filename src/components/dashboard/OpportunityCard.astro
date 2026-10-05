@@ -25,7 +25,7 @@ const isQuick = opportunity.type === 'featuredPoll';
 <li class={`dash-opp-card ${isQuick ? 'dash-opp-card--quick' : ''}`}>
   <div class="dash-opp-head">
     <i class={`fa-solid ${icon} dash-icon`} aria-hidden="true"></i>
-    {opportunity.badge && <span class="badge badge-over-gray">{opportunity.badge}</span>}
+    {opportunity.badge && <span class="dash-tag dash-tag--muted">{opportunity.badge}</span>}
   </div>
 
   <h3 class="h6 dash-opp-title">{opportunity.title}</h3>
@@ -40,7 +40,7 @@ const isQuick = opportunity.type === 'featuredPoll';
   <div class="dash-opp-footer">
     <p class="dash-opp-points mb-0">
       <i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> {opportunity.pointsLabel}
-      {opportunity.metaLabel && <span class="dash-opp-sub"> · {opportunity.metaLabel}</span>}
+      {opportunity.metaLabel && <span class="dash-opp-sub">{opportunity.metaLabel}</span>}
     </p>
     <a class={isQuick ? 'dash-link-cta' : 'btn btn-outline-primary btn-sm'} href={opportunity.ctaHref}>{opportunity.ctaLabel}</a>
   </div>
@@ -51,57 +51,78 @@ const isQuick = opportunity.type === 'featuredPoll';
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: var(--dash-space-sm);
+    padding: var(--dash-space-4);
     background: var(--dash-surface);
     border: 1px solid var(--dash-border-subtle);
     border-radius: var(--dash-radius-sm);
   }
 
+  /* Lighter quick-poll card: same grid cell and radius, dashed + tinted, tighter vertical padding. */
   .dash-opp-card--quick {
-    padding: var(--dash-space-xs) var(--dash-space-sm);
+    padding: var(--dash-space-3) var(--dash-space-4);
     background: var(--dash-surface-subtle);
     border-style: dashed;
   }
 
+  /* Fixed-height head row so every title starts at the same y, with or without a badge. */
   .dash-opp-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    min-height: 24px;
+    margin-bottom: var(--dash-space-2);
   }
 
   .dash-opp-title {
-    margin-bottom: 4px;
+    font-size: var(--dash-fs-title);
+    line-height: 1.3;
+    margin-bottom: var(--dash-space-1);
   }
 
   .dash-opp-desc {
-    font-size: 13px;
+    font-size: var(--dash-fs-body);
+    line-height: 1.4;
     color: var(--dash-text-secondary);
     margin-bottom: 0;
   }
 
   .dash-opp-progress {
-    height: 5px;
-    margin-top: 10px;
+    height: 6px;
+    margin-top: var(--dash-space-3);
   }
 
   .dash-opp-footer {
     margin-top: auto;
-    padding-top: var(--dash-space-sm);
+    padding-top: var(--dash-space-4);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: var(--dash-space-3);
+    min-height: calc(var(--dash-control-md) + var(--dash-space-4));
   }
 
   .dash-opp-points {
-    font-size: 13px;
+    flex: 1;
+    min-width: 0;
+    font-size: var(--dash-fs-meta);
+    line-height: 1.35;
     font-weight: 700;
     color: var(--dash-text-primary);
   }
 
   .dash-opp-sub {
+    display: block;
     font-weight: 400;
     color: var(--dash-text-secondary);
+  }
+
+  .dash-opp-footer .btn,
+  .dash-opp-footer .dash-link-cta {
+    flex-shrink: 0;
+  }
+
+  .dash-opp-card--quick .dash-opp-footer {
+    padding-top: var(--dash-space-1);
+    min-height: 0;
   }
 </style>
