@@ -1,0 +1,70 @@
+---
+import type { Article } from '../../data/dashboard/types';
+
+interface Props {
+  articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<section class="dash-articles dash-panel" aria-label="Latest from Ipsos iSay Today">
+  <h2 class="h6 dash-rail-heading">Latest from Ipsos iSay Today</h2>
+  <ul class="dash-articles-list list-unstyled mb-0">
+    {articles.map((article) => (
+      <li class="dash-article">
+        {article.tag && <span class="dash-article-tag">{article.tag}</span>}
+        <a href={article.href} class="dash-article-title">{article.title}</a>
+        <p class="dash-article-excerpt mb-0">{article.excerpt}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .dash-articles {
+    padding: var(--dash-space-md);
+    background: var(--dash-surface-subtle);
+  }
+
+  .dash-rail-heading {
+    font-size: 13px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dash-text-secondary) !important;
+  }
+
+  .dash-article {
+    padding: 14px 0;
+    border-bottom: 1px dotted var(--dash-border-subtle);
+  }
+
+  .dash-article:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .dash-article:first-child {
+    padding-top: 0;
+  }
+
+  .dash-article-tag {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--dash-text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .dash-article-title {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .dash-article-excerpt {
+    font-size: 13px;
+    color: var(--dash-text-secondary);
+  }
+</style>

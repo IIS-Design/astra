@@ -1,0 +1,87 @@
+---
+import type { DailyEngagementItem } from '../../data/dashboard/types';
+
+interface Props {
+  items: DailyEngagementItem[];
+  emphasized?: boolean;
+}
+
+const { items, emphasized = false } = Astro.props;
+
+// Same icon family as the rest of the dashboard — lighter tiles communicate weight, not a new icon style.
+const iconByType: Record<DailyEngagementItem['icon'], string> = {
+  question: 'fa-comment-dots',
+  wheel: 'fa-gift',
+  predictor: 'fa-bullseye',
+};
+---
+
+<section class={`dash-section dash-daily ${emphasized ? 'dash-daily-emphasized' : ''}`} aria-label="Daily engagement">
+  <h2 class="h5 dash-section-title">Daily Engagement</h2>
+  <ul class="dash-daily-grid list-unstyled mb-0">
+    {items.map((item) => (
+      <li class="dash-daily-tile">
+        <div class="dash-daily-head">
+          <i class={`fa-solid ${iconByType[item.icon]} dash-icon`} aria-hidden="true"></i>
+          <span class="dash-daily-title">{item.title}</span>
+        </div>
+        <div class="dash-daily-foot">
+          <span class="dash-daily-points"><i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> {item.pointsLabel}</span>
+          {item.completed ? (
+            <span class="dash-tag dash-tag--muted">Done today</span>
+          ) : (
+            <a class="dash-link-cta" href={item.ctaHref}>{item.ctaLabel}</a>
+          )}
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .dash-daily-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .dash-daily-tile {
+    flex: 1 1 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: var(--dash-space-xs) var(--dash-space-sm);
+    background: var(--dash-surface);
+    border: 1px solid var(--dash-border-subtle);
+    border-radius: var(--dash-radius-control);
+  }
+
+  .dash-daily-emphasized .dash-daily-tile {
+    background: var(--dash-surface-brand-subtle);
+  }
+
+  .dash-daily-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dash-daily-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dash-text-primary);
+  }
+
+  .dash-daily-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .dash-daily-points {
+    font-size: 13px;
+    color: var(--dash-text-secondary);
+    white-space: nowrap;
+  }
+</style>

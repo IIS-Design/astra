@@ -1,0 +1,70 @@
+---
+import type { Reward } from '../../data/dashboard/types';
+import RewardCard from './RewardCard.astro';
+
+interface Props {
+  rewards: Reward[];
+}
+
+const { rewards } = Astro.props;
+---
+
+<section class="dash-section dash-rewards" aria-label="Rewards">
+  <div class="d-flex align-items-center justify-content-between dash-section-title">
+    <h2 class="h5 mb-0">Rewards</h2>
+    <div class="dash-rewards-nav d-none d-md-flex gap-2">
+      <button type="button" class="dash-scroll-btn" data-direction="-1" aria-label="Scroll rewards left">
+        <i class="fa-solid fa-chevron-left dash-icon" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="dash-scroll-btn" data-direction="1" aria-label="Scroll rewards right">
+        <i class="fa-solid fa-chevron-right dash-icon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+  <ul class="dash-rewards-track list-unstyled mb-0">
+    {rewards.map((reward) => (
+      <RewardCard reward={reward} />
+    ))}
+  </ul>
+</section>
+
+<style>
+  .dash-rewards-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .dash-scroll-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--dash-border-subtle);
+    background: var(--dash-surface);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .dash-scroll-btn:hover {
+    background: var(--dash-surface-subtle);
+  }
+</style>
+
+<script>
+  // Wire each rewards scroller's prev/next buttons to its own track (scoped via closest()).
+  document.querySelectorAll<HTMLElement>('.dash-rewards').forEach((section) => {
+    const track = section.querySelector<HTMLElement>('.dash-rewards-track');
+    section.querySelectorAll<HTMLButtonElement>('.dash-scroll-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!track) return;
+        const direction = Number(button.dataset.direction ?? '1');
+        track.scrollBy({ left: direction * 220, behavior: 'smooth' });
+      });
+    });
+  });
+</script>

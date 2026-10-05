@@ -1,0 +1,127 @@
+---
+import type { PrimaryAction as PrimaryActionData } from '../../data/dashboard/types';
+
+interface Props {
+  action: PrimaryActionData;
+}
+
+const { action } = Astro.props;
+
+// Accent color only — the panel stays a contained module, not a tinted marketing hero.
+const toneByKind: Record<PrimaryActionData['kind'], string> = {
+  survey: 'primary',
+  reward: 'success',
+  dailyChallenge: 'secondary',
+  study: 'primary',
+  profile: 'warning',
+};
+
+const tone = toneByKind[action.kind];
+---
+
+<section class={`dash-primary tone-${tone}`} aria-label="Next best action">
+  <span class="dash-primary-accent" aria-hidden="true"></span>
+  <div class="dash-primary-body">
+    <p class="dash-eyebrow">{action.eyebrow}</p>
+    <div class="dash-primary-row">
+      <div class="dash-primary-copy">
+        <h2 class="dash-primary-heading">{action.heading}</h2>
+        <p class="dash-primary-desc mb-0">{action.description}</p>
+        {(action.pointsLabel || action.metaLabel) && (
+          <p class="dash-primary-meta mb-0">
+            {action.pointsLabel && (
+              <span class="dash-meta-item"><i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> {action.pointsLabel}</span>
+            )}
+            {action.metaLabel && <span class="dash-meta-item">{action.metaLabel}</span>}
+          </p>
+        )}
+      </div>
+      <div class="dash-primary-actions">
+        <a class="btn btn-primary" href={action.ctaHref}>{action.ctaLabel}</a>
+        {action.secondaryCtaLabel && (
+          <a class="dash-link-cta d-block mt-2" href={action.secondaryCtaHref}>
+            {action.secondaryCtaLabel}
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dash-primary {
+    display: flex;
+    gap: 16px;
+    padding: var(--dash-space-md) var(--dash-space-md) var(--dash-space-md) 0;
+    background: var(--dash-surface-subtle);
+    border: 1px solid var(--dash-border-subtle);
+    border-radius: var(--dash-radius-md);
+    overflow: hidden;
+  }
+
+  .dash-primary-accent {
+    width: 5px;
+    flex-shrink: 0;
+    background: var(--dash-brand);
+  }
+
+  .tone-success .dash-primary-accent { background: var(--dash-success); }
+  .tone-secondary .dash-primary-accent { background: var(--bg-secondary-default); }
+  .tone-warning .dash-primary-accent { background: var(--dash-warning); }
+
+  .dash-primary-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .dash-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dash-text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .dash-primary-heading {
+    font-size: 22px !important;
+    margin-bottom: 6px;
+  }
+
+  .dash-primary-desc {
+    color: var(--dash-text-secondary);
+  }
+
+  .dash-primary-meta {
+    font-size: 14px;
+    color: var(--dash-text-primary);
+    margin-top: 10px;
+  }
+
+  .dash-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 16px;
+    font-weight: 700;
+  }
+
+  .dash-primary-actions {
+    flex-shrink: 0;
+    margin-top: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .dash-primary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .dash-primary-actions {
+      margin-top: 0;
+      text-align: right;
+    }
+  }
+</style>

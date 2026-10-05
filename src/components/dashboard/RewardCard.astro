@@ -1,0 +1,76 @@
+---
+import { Image } from 'astro:assets';
+import type { Reward } from '../../data/dashboard/types';
+import { rewardImages } from '../../data/dashboard/rewardImages';
+
+interface Props {
+  reward: Reward;
+}
+
+const { reward } = Astro.props;
+const image = rewardImages[reward.image as keyof typeof rewardImages];
+---
+
+<li class="dash-reward">
+  <div class={`dash-reward-card ${reward.status === 'locked' ? 'is-locked' : ''}`}>
+    <Image src={image} class="dash-reward-img" alt={reward.title} />
+    <p class="dash-reward-title mb-1">{reward.title}</p>
+    <div class="dash-reward-footer">
+      <span class="dash-reward-points">
+        <i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> {reward.points}
+      </span>
+      {reward.status === 'redeemable' && <span class="dash-tag dash-tag--success">Redeem now</span>}
+      {reward.status === 'inReach' && <span class="dash-tag dash-tag--muted">{reward.points} needed</span>}
+      {reward.status === 'locked' && <span class="dash-tag dash-tag--locked">Locked</span>}
+    </div>
+  </div>
+</li>
+
+<style>
+  .dash-reward {
+    scroll-snap-align: start;
+    min-width: 168px;
+    max-width: 168px;
+  }
+
+  .dash-reward-card {
+    border: 1px solid var(--dash-border-subtle);
+    border-radius: var(--dash-radius-sm);
+    padding: 10px;
+    height: 100%;
+  }
+
+  .dash-reward-card.is-locked {
+    opacity: 0.6;
+  }
+
+  .dash-reward-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--dash-radius-control);
+    margin-bottom: 8px;
+  }
+
+  .dash-reward-title {
+    font-size: 13px;
+    color: var(--dash-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dash-reward-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .dash-reward-points {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dash-text-primary);
+    white-space: nowrap;
+  }
+</style>

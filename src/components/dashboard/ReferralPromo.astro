@@ -1,0 +1,48 @@
+---
+import type { Referral } from '../../data/dashboard/types';
+
+interface Props {
+  referral: Referral;
+}
+
+const { referral } = Astro.props;
+---
+
+<div class="dash-referral">
+  <i class="fa-solid fa-user-plus dash-icon" aria-hidden="true"></i>
+  <p class="dash-referral-text mb-0">
+    <strong>Refer a friend.</strong> {referral.description}
+  </p>
+  <span class="dash-referral-points">
+    <i class="fa-solid fa-star dash-points-icon" aria-hidden="true"></i> {referral.pointsLabel}
+  </span>
+  <a class="dash-link-cta" href={referral.ctaHref}>{referral.ctaLabel}</a>
+</div>
+
+<style>
+  .dash-referral {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    margin-top: var(--dash-space-sm);
+    padding: 14px 16px;
+    background: var(--dash-surface-brand-subtle);
+    border: 1px solid var(--dash-border-subtle);
+    border-radius: var(--dash-radius-sm);
+  }
+
+  .dash-referral-text {
+    flex: 1;
+    min-width: 200px;
+    font-size: 14px;
+    color: var(--dash-text-primary);
+  }
+
+  .dash-referral-points {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dash-text-primary);
+    white-space: nowrap;
+  }
+</style>

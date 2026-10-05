@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import DashboardHeader from '../../components/dashboard/DashboardHeader.astro';
+import DashboardShell from '../../components/dashboard/DashboardShell.astro';
+import DevStateSwitcher from '../../components/dashboard/DevStateSwitcher.astro';
+import PrimaryAction from '../../components/dashboard/PrimaryAction.astro';
+import ProgressOverview from '../../components/dashboard/ProgressOverview.astro';
+import OpportunitiesSection from '../../components/dashboard/OpportunitiesSection.astro';
+import RewardsSection from '../../components/dashboard/RewardsSection.astro';
+import DailyEngagement from '../../components/dashboard/DailyEngagement.astro';
+import ArticlesSection from '../../components/dashboard/ArticlesSection.astro';
+
+import '../../assets/styles/dashboard.css';
+import { dashboardStates, articles } from '../../data/dashboard/mockStates';
+
+const defaultStateId = dashboardStates[0].id;
+---
+
+<Layout title="Dashboard | Ipsos iSay">
+  <div class="isay-dashboard">
+    <DashboardHeader points={dashboardStates[0].progress.points} />
+
+    <main class="container py-4 py-md-5">
+      <DashboardShell>
+        <Fragment slot="main">
+          {dashboardStates.map((state) => (
+            <div
+              class="dash-state-panel"
+              class:list={[{ 'is-active': state.id === defaultStateId }]}
+              data-state={state.id}
+              data-points={state.progress.points}
+            >
+              <PrimaryAction action={state.primaryAction} />
+              <ProgressOverview progress={state.progress} />
+              <OpportunitiesSection opportunities={state.opportunities} referral={state.referral} />
+              <RewardsSection rewards={state.rewards} />
+              <DailyEngagement items={state.dailyEngagement} emphasized={state.dailyEngagementEmphasized} />
+            </div>
+          ))}
+        </Fragment>
+        <Fragment slot="rail">
+          <ArticlesSection articles={articles} />
+        </Fragment>
+      </DashboardShell>
+    </main>
+
+    <Footer />
+
+    <DevStateSwitcher states={dashboardStates} defaultStateId={defaultStateId} />
+  </div>
+</Layout>
+
+<style>
+  .dash-state-panel {
+    display: none;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .dash-state-panel.is-active {
+    display: flex;
+  }
+</style>

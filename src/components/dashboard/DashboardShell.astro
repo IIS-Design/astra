@@ -1,0 +1,45 @@
+---
+// Layout shell: main content column + secondary editorial rail.
+// The rail collapses below the main column on narrower viewports.
+---
+
+<div class="dash-shell">
+  <div class="dash-main">
+    <slot name="main" />
+  </div>
+  <aside class="dash-rail" aria-label="Latest from Ipsos iSay Today">
+    <slot name="rail" />
+  </aside>
+</div>
+
+<style>
+  .dash-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .dash-main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .dash-rail {
+    min-width: 0;
+  }
+
+  @media (min-width: 1240px) {
+    .dash-shell {
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 40px;
+    }
+
+    .dash-rail {
+      position: sticky;
+      top: 24px;
+    }
+  }
+</style>
