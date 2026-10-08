@@ -14,6 +14,8 @@ function isInternal(url) {
     url === '/favicon.svg' ||
     url.startsWith('/p1/') ||
     url.startsWith('/projects/') ||
+    url === '/dashboard' ||
+    url.startsWith('/dashboard/') ||
     url.startsWith('/standalone/') ||
     url.startsWith('/design-system')
   );
